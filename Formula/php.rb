@@ -92,8 +92,8 @@ class Php < Formula
     args = [
       "--prefix=#{prefix}",
       "--disable-debug",
-      "--with-config-file-path=#{etc}",
-      "--with-config-file-scan-dir=#{etc}/php5/conf.d",
+      "--with-config-file-path=/etc",
+      "--with-config-file-scan-dir=/etc/php5/conf.d",
       "--with-iconv-dir=/usr",
       "--enable-dba",
       "--with-ndbm=/usr",
@@ -222,9 +222,9 @@ class Php < Formula
     ENV.deparallelize # parallel install fails on some systems
     system "make install"
 
-    etc.install "./php.ini-production" => "php.ini" unless File.exists? etc+"php.ini"
+    #etc.install "./php.ini-production" => "php.ini" unless File.exists? "/etc/php.ini"
     chmod_R 0775, lib+"php"
-    system bin+"pear", "config-set", "php_ini", etc+"php.ini" unless ARGV.include? '--without-pear'
+    system bin+"pear", "config-set", "php_ini", "/etc/php.ini" unless ARGV.include? '--without-pear'
     if ARGV.include?('--with-fpm') and not File.exists? etc+"php-fpm.conf"
       etc.install "sapi/fpm/php-fpm.conf"
       inreplace etc+"php-fpm.conf" do |s|
